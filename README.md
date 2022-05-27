@@ -138,5 +138,42 @@ GwInitRequestHandler reqHandler=new  GwInitRequestHandler();
 		System.out.println("responseContent:" + resContent);
 	}
 ```
-
-
+### content-type=application/json demo
+```java
+GwInitRequestHandler reqHandler=new  GwInitRequestHandler(); 
+		reqHandler.init();
+		reqHandler.setAppId(_aid);
+		reqHandler.setApplicationKey(_akey);
+		reqHandler.setApplicationSecret(_asid);
+		reqHandler.setVersion(_version);
+		reqHandler.setMethod("open.shopweb.scene.saveScene");
+		reqHandler.setGateUrl(apigwUrl);
+		Map<String,Object> scene = new HashMap<String ,Object>();
+		Map<String ,Object> data=new HashMap<String ,Object>();
+		data.put("presetNo", "1");
+		data.put("sceneName", "场景12233");
+		data.put("hasConfig", "0");
+		data.put("isExtended", "0");
+		data.put("deviceId", "xxx");
+		data.put("depId", "xxx");
+		data.put("isDisabled", "0");
+		data.put("sceneModel", "xxx");
+		scene.put("scene", data);
+		OvoParkHttpClient httpClient=new OvoParkHttpClient();
+		httpClient.setHeaders("authenticator", "xxxxxxxxx");
+		String requestUrl = reqHandler.getRequestURL();
+		System.out.println(requestUrl);
+		httpClient.setContentType(ApiConst.CONTENT_TYPE_JSON);//set content-type=application/json
+		String json =JSON.toJSONString(scene);
+		System.err.println(json);
+		httpClient.setRequestJSON(json);
+		//Get debug information
+		String debuginfo = reqHandler.getDebugInfo();
+		System.out.println("debuginfo:" + debuginfo);
+		//Set request content
+		httpClient.setReqContent(requestUrl);
+		if(httpClient.call()){
+			String resContent = httpClient.getResContent();
+			System.out.println("responseContent:" + resContent);
+		}
+```
